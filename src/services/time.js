@@ -1,5 +1,123 @@
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
+const DATE_PRESETS = {
+  short: { year: 'numeric', month: 'short', day: 'numeric' },
+  compact: { year: 'numeric', month: '2-digit', day: '2-digit' },
+  weekday: { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' },
+  monthDay: { month: 'short', day: 'numeric' },
+  time: { hour: '2-digit', minute: '2-digit' }
+};
+
+function normalizeYear(value) {
+  if (value === true) {
+    return 'numeric';
+  }
+
+  return value === '2-digit' ? '2-digit' : value === 'numeric' ? 'numeric' : undefined;
+}
+
+function normalizeMonth(value) {
+  if (value === true) {
+    return 'short';
+  }
+
+  return ['numeric', '2-digit', 'long', 'short', 'narrow'].includes(value) ? value : undefined;
+}
+
+function normalizeDay(value) {
+  if (value === true) {
+    return 'numeric';
+  }
+
+  return value === '2-digit' ? '2-digit' : value === 'numeric' ? 'numeric' : undefined;
+}
+
+function normalizeWeekday(value) {
+  return ['long', 'short', 'narrow'].includes(value) ? value : undefined;
+}
+
+function normalizeTimePart(value) {
+  if (value === true) {
+    return '2-digit';
+  }
+
+  return value === '2-digit' ? '2-digit' : value === 'numeric' ? 'numeric' : undefined;
+}
+
+export function getAppLocale(language = 'en') {
+  if (language === 'af' || language === 'af-ZA') {
+    return 'af-ZA';
+  }
+
+  if (language === 'en' || language === 'en-ZA') {
+    return 'en-ZA';
+  }
+
+  return language;
+}
+
+export function normalizeDateFormatOptions(options = {}) {
+  const normalized = {};
+
+  if ('weekday' in options) {
+    const weekday = normalizeWeekday(options.weekday);
+    if (weekday) {
+      normalized.weekday = weekday;
+    }
+  }
+
+  if ('year' in options) {
+    const year = normalizeYear(options.year);
+    if (year) {
+      normalized.year = year;
+    }
+  }
+
+  if ('month' in options) {
+    const month = normalizeMonth(options.month);
+    if (month) {
+      normalized.month = month;
+    }
+  }
+
+  if ('day' in options) {
+    const day = normalizeDay(options.day);
+    if (day) {
+      normalized.day = day;
+    }
+  }
+
+  if ('hour' in options) {
+    const hour = normalizeTimePart(options.hour);
+    if (hour) {
+      normalized.hour = hour;
+    }
+  }
+
+  if ('minute' in options) {
+    const minute = normalizeTimePart(options.minute);
+    if (minute) {
+      normalized.minute = minute;
+    }
+  }
+
+  if ('hour12' in options) {
+    normalized.hour12 = Boolean(options.hour12);
+  }
+
+  return Object.keys(normalized).length ? normalized : { ...DATE_PRESETS.short };
+}
+
+export function formatAppDate(date, locale = 'en-ZA', mode = 'short') {
+  const value = date instanceof Date ? date : new Date(date);
+  const options =
+    typeof mode === 'string'
+      ? normalizeDateFormatOptions(DATE_PRESETS[mode] || DATE_PRESETS.short)
+      : normalizeDateFormatOptions(mode);
+
+  return new Intl.DateTimeFormat(locale, options).format(value);
+}
+
 export function pad(value) {
   return String(value).padStart(2, '0');
 }
@@ -51,19 +169,20 @@ export function combineDateAndTime(date, time) {
 }
 
 export function formatDisplayDate(date, language = 'en', options = {}) {
-  return new Intl.DateTimeFormat(language === 'af' ? 'af-ZA' : 'en-ZA', {
-    weekday: options.weekday ?? 'short',
+  if (typeof options === 'string') {
+    return formatAppDate(date, getAppLocale(language), options);
+  }
+
+  return formatAppDate(date, getAppLocale(language), {
+    weekday: 'short',
     day: 'numeric',
-    month: options.month ?? 'short',
-    ...(options.year ? { year: options.year } : {})
-  }).format(date);
+    month: 'short',
+    ...options
+  });
 }
 
 export function formatDisplayTime(time, language = 'en') {
-  return new Intl.DateTimeFormat(language === 'af' ? 'af-ZA' : 'en-ZA', {
-    hour: '2-digit',
-    minute: '2-digit'
-  }).format(combineDateAndTime(new Date(), time));
+  return formatAppDate(combineDateAndTime(new Date(), time), getAppLocale(language), 'time');
 }
 
 export function getScheduleEndTime(schedule, settings) {

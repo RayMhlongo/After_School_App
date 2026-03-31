@@ -198,7 +198,7 @@ function renderDashboard(state, t, language) {
     <section class="screen ${state.ui.activeScreen === 'dashboard' ? 'is-active' : ''}" data-screen="dashboard">
       <div class="hero-card">
         <div>
-          <p class="eyebrow">${formatDisplayDate(date, language, { weekday: 'long', month: 'long', year: true })}</p>
+          <p class="eyebrow">${formatDisplayDate(date, language, 'weekday')}</p>
           <h2>${t('introTitle')}</h2>
           <p>${t('introText')}</p>
         </div>

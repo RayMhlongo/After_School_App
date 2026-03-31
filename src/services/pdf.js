@@ -110,7 +110,7 @@ export async function exportPdf(snapshot, options = {}) {
     `${t('appName')} | ${t('printReady')} | ${formatDisplayDate(exportDate, language, {
       weekday: 'long',
       month: 'long',
-      year: true
+      year: 'numeric'
     })}`
   );
 

@@ -53,7 +53,7 @@ function buildDailySummary(snapshot, date, language) {
   const at = combineDateAndTime(date, snapshot.appSettings.dailySummaryTime || '06:15');
   return {
     at,
-    title: formatDisplayDate(date, language, { weekday: 'long', month: 'short', year: true }),
+    title: formatDisplayDate(date, language, { weekday: 'long', month: 'short', year: 'numeric' }),
     body:
       childCount === 1
         ? t('notificationSummarySingle')
