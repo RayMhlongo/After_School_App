@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">After School Planner</string>
+    <string name="title_activity_main">After School Planner</string>
+    <string name="package_name">za.co.ray.afterschoolplanner</string>
+    <string name="custom_url_scheme">za.co.ray.afterschoolplanner</string>
+</resources>

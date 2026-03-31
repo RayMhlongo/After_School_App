@@ -1,0 +1,24 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="barGlow" x1="108" y1="380" x2="360" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A6BFF" />
+      <stop offset="1" stop-color="#2AE8D6" />
+    </linearGradient>
+    <filter id="softGlow" x="54" y="54" width="404" height="404" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0.75  0 0 1 0 0.8  0 0 0 0.55 0" />
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="#071429" />
+  <circle cx="282" cy="182" r="122" fill="#0C2344" />
+  <g filter="url(#softGlow)">
+    <path d="M108 386H394" stroke="#59F7E3" stroke-width="16" stroke-linecap="round" />
+    <rect x="138" y="258" width="56" height="128" rx="14" fill="url(#barGlow)" />
+    <rect x="224" y="184" width="56" height="202" rx="14" fill="url(#barGlow)" />
+    <rect x="310" y="128" width="56" height="258" rx="14" fill="url(#barGlow)" />
+  </g>
+  <path d="M108 386H394" stroke="#88FFF1" stroke-width="8" stroke-linecap="round" />
+  <rect x="138" y="258" width="56" height="128" rx="14" fill="url(#barGlow)" stroke="#B7FFF7" stroke-width="4" />
+  <rect x="224" y="184" width="56" height="202" rx="14" fill="url(#barGlow)" stroke="#B7FFF7" stroke-width="4" />
+  <rect x="310" y="128" width="56" height="258" rx="14" fill="url(#barGlow)" stroke="#B7FFF7" stroke-width="4" />
+</svg>
